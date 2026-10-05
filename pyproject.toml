@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lutho-2556"
+dynamic = ["version"]
+description = "LUTHO Intelligence diagnostic command center"
+requires-python = ">=3.11"
+dependencies = ["PySide6>=6.7,<7", "psutil>=6.0,<8"]
+
+[project.optional-dependencies]
+usb = ["pymobiledevice3"]                 # Live iPhone over USB (read-only)
+dev = ["pytest>=8,<9"]
+
+[project.scripts]
+lutho-2556 = "lutho.cli:main"
+imdesk = "imba_desk.cli.launcher:main"   # standalone ImbaLink Desk (no LUTHO window)
+
+[tool.setuptools.dynamic]
+version = { attr = "lutho.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["lutho*", "imba_desk*"]
+
+[tool.setuptools.package-data]
+lutho = ["analysis/data/*.json", "ui/theme/qss/*.qss", "resources/samples/*", "resources/prototype/*.json"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
